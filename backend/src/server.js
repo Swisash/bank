@@ -16,7 +16,7 @@ const app = express();
 
 //app.use(cors());
 app.use(cors({
-  origin: 'http://localhost:5173', // וודאי שזה הפורט המדויק שלך
+  origin: process.env.FRONT_URL, // וודאי שזה הפורט המדויק שלך
   credentials: true
 }));
 
