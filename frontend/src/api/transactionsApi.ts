@@ -1,6 +1,6 @@
 import axios, { isAxiosError } from 'axios';
 import Cookies from "js-cookie";
-const API_BASE_URL = 'http://localhost:3000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api/v1';
 
 export const transferMoney = async  ( toEmail: string, amount : number, transferDescription : string ) => {
     const token = Cookies.get("auth_token");
@@ -13,7 +13,7 @@ export const transferMoney = async  ( toEmail: string, amount : number, transfer
         console.log(transferDescription);
 
         const response = await axios.post(
-            `http://localhost:3000/api/v1/transactions`, 
+            `${API_BASE_URL}/transactions`, 
             { toEmail, amount, transferDescription },
                 {
                 headers:{

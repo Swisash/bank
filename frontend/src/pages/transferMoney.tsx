@@ -1,7 +1,6 @@
 import {
   Box,
   Container,
-  Grid,
   Paper,
   Typography,
   TextField,
@@ -9,17 +8,14 @@ import {
   Stack,
   AppBar,
   Toolbar,
-  Chip,
   Card,
 } from "@mui/material";
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { transferMoney } from "../api/transactionsApi";
 import { getCurrentUser } from "../api/authApi";
-import type { Account } from "../api/types";
 import { useUser } from "../context/UserContext";
 
 
