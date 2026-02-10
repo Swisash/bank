@@ -4,6 +4,7 @@ import Login from '../pages/login';
 import Signup from '../pages/signup';
 import Dashboard from '../pages/dashboard';
 import TransferMoney from '../pages/transferMoney';
+import History from '../pages/history';
 
 const AppRoutes = () => {
     return (
@@ -13,6 +14,7 @@ const AppRoutes = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/transferMoney" element={<TransferMoney />} />
+        <Route path="/history" element={<History />} />
     </Routes>
     )
 }

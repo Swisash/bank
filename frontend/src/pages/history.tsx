@@ -5,7 +5,6 @@ import {
   Toolbar,
   Button,
   Stack,
-  Card,
   Avatar,
   Paper,
   Container,
@@ -14,50 +13,50 @@ import {
   AccordionDetails,
 } from "@mui/material";
 
-import SendIcon from "@mui/icons-material/Send";
+import { useNavigate } from "react-router-dom"
+import { useUser } from "../context/UserContext";
+import ArrowBackIcon from "@mui/icons-material/ArrowBackIosNew";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore"; // אייקון לפתיחה
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"; // אייקון לפתיחה
-import HistoryIcon from "@mui/icons-material/History";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getCurrentUser } from "../api/authApi";
-import { useUser } from "../context/UserContext";
+import type { GetCurrentUserResponse } from "../api/types";
 
 
-const Dashboard = () => {
+const History = () => {
     const navigate = useNavigate();
+    // 1. Destructure setUserData so you can actually use it
     const { user, account, transactions, setUserData } = useUser();
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchUser = async () => {
+        const fetchAccount = async () => {
             try {
                 const data = await getCurrentUser();
                 setUserData(data);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false);
+            } catch (err) {
+                console.error("Fetch failed:", err);
             }
         };
-    if (!user) {
-            fetchUser();
-        } else {
-            setLoading(false);
-        }
-    }, [user, setUserData]);
 
-    if (loading) {
+        // 2. Only fetch if we don't have the data yet to save API calls
+        if (!transactions) {
+            fetchAccount();
+        }
+        
+        // 3. Keep dependency array simple to avoid infinite loops
+    }, [setUserData]); 
+      
+    // 4. Handle the state accurately
+    if (!transactions) {
         return (
-            <Box sx={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Typography>Loading...</Typography>
+            <Box sx={{ p: 4, textAlign: 'center' }}>
+                <Typography>Loading your history...</Typography>
             </Box>
         );
     }
-
-    return (
+     return (
         <Box sx={{ minHeight: "100vh", bgcolor: "#F6F7FB", width: "100%" }}>
             
             {/* Navbar */}
@@ -70,11 +69,13 @@ const Dashboard = () => {
                 <Toolbar sx={{ justifyContent: "space-between" }}>
                     <Stack direction="row" spacing={2} alignItems="center">
                         <Typography fontWeight={800} color="text.primary">SHIZZ BANK</Typography>
-                        <Button startIcon={<SendIcon />} onClick={() => navigate('/transferMoney')} sx={{ textTransform: "none" }}>
-                            Transfer
-                        </Button>
-                        <Button startIcon={<HistoryIcon />} onClick={() => navigate('/history')} sx={{ textTransform: "none" }}>
-                            History
+                            <Button
+                            variant="contained"
+                            startIcon={<ArrowBackIcon sx={{ fontSize: 14 }} />}
+                            sx={{ px: 2, textTransform: "none" }}
+                            onClick={() => navigate("/dashboard")}
+                        >
+                        Back to Dashboard
                         </Button>
                     </Stack>
 
@@ -95,44 +96,19 @@ const Dashboard = () => {
                     
                     {/* Header */}
                     <Box sx={{ mb: 4, textAlign: "center" }}>
-                        <Typography variant="h4" fontWeight={800}>Welcome back, {user?.firstName}!</Typography>
-                        <Typography color="text.secondary">Manage your finances and track your expenses</Typography>
+                        <Typography variant="h4" fontWeight={800}>Transactions History</Typography>
+                        <Typography color="text.secondary">All your transactions in one place</Typography>
                     </Box>
 
-                    {/* Balance Card */}
-                    <Card sx={{
-                        p: { xs: 3, md: 4 },
-                        borderRadius: 5,
-                        background: "linear-gradient(110deg, #0A8F7F 0%, #1E66D0 55%, #6C63FF 100%)",
-                        color: "white",
-                        mb: 5,
-                        boxShadow: "0 14px 40px rgba(30, 102, 208, 0.25)"
-                    }}>
-                        <Stack spacing={2} alignItems="center">
-                            <Box sx={{ px: 2, py: 0.6, borderRadius: 999, bgcolor: "rgba(255,255,255,0.18)" }}>
-                                <Typography variant="body2" sx={{ opacity: 0.95 }}>Available Balance</Typography>
-                            </Box>
-                            <Typography variant="h2" fontWeight={800} sx={{ lineHeight: 1 }}>
-                                {account?.balance.toLocaleString()} {account?.currency}
-                            </Typography>
-                            <Stack direction="row" spacing={1} alignItems="center">
-                                <Box sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: "success.light" }} />
-                                <Typography variant="caption" sx={{ opacity: 0.9, textTransform: "uppercase", letterSpacing: 0.5 }}>
-                                    Account Status: {account?.status}
-                                </Typography>
-                            </Stack>
-                        </Stack>
-                    </Card>
 
                     {/* Transactions Section */}
                     <Box>
                         <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
                             <Typography variant="h6" fontWeight={700}>Recent Activity</Typography>
-                            <Button variant="text" size="small" sx={{ textTransform: "none" }}>View All</Button>
                         </Stack>
 
                         <Stack spacing={1}>
-                            {transactions?.slice(0,5).map((tx) => {
+                            {transactions?.map((tx) => {
                                 const isOutgoing = tx.fromEmail === user?.email;
                                 
                                 return (
@@ -203,6 +179,11 @@ const Dashboard = () => {
             </Container>
         </Box>
     );
-};
 
-export default Dashboard;
+}
+
+export default History;
+
+function setUserData(data: GetCurrentUserResponse) {
+    throw new Error("Function not implemented.");
+}
