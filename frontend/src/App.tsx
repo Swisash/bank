@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { UserProvider } from './context/UserContext'; 
 import AppRoutes from './routes/appRoutes'
 import './App.css'
+import ChatBotUI from './components/Chatbot';
 
 function App() {
 
@@ -15,6 +16,9 @@ function App() {
     <BrowserRouter>
     <div>
         <AppRoutes />
+        <ChatBotUI />
+        
+    
     </div>
     </BrowserRouter>
     </UserProvider> 

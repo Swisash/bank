@@ -17,6 +17,8 @@ import { useEffect, useState } from "react";
 import { transferMoney } from "../api/transactionsApi";
 import { getCurrentUser } from "../api/authApi";
 import { useUser } from "../context/UserContext";
+import Logo from "../components/Logo";
+
 
 
 const TransferMoney = () => {
@@ -61,6 +63,7 @@ const TransferMoney = () => {
       >
         <Toolbar sx={{ justifyContent: "space-between" }}>
            <Stack direction="row" spacing={2} alignItems="center">
+            <Logo />
           <Typography fontWeight={700} color="text.primary">SHIZZ BANK</Typography>
           <Button
             variant="contained"

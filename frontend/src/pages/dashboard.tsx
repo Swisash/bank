@@ -24,12 +24,14 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getCurrentUser } from "../api/authApi";
 import { useUser } from "../context/UserContext";
+import  Logo  from "../components/Logo";
 
 
 const Dashboard = () => {
     const navigate = useNavigate();
     const { user, account, transactions, setUserData } = useUser();
     const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -69,6 +71,7 @@ const Dashboard = () => {
             >
                 <Toolbar sx={{ justifyContent: "space-between" }}>
                     <Stack direction="row" spacing={2} alignItems="center">
+                           <Logo />
                         <Typography fontWeight={800} color="text.primary">SHIZZ BANK</Typography>
                         <Button startIcon={<SendIcon />} onClick={() => navigate('/transferMoney')} sx={{ textTransform: "none" }}>
                             Transfer
@@ -91,6 +94,7 @@ const Dashboard = () => {
             <Box sx={(theme) => theme.mixins.toolbar} />
 
             <Container maxWidth={false} disableGutters sx={{ py: 0}}>
+
                 <Paper elevation={0} sx={{ p: { xs: 2, md: 4 }, borderRadius: 3, bgcolor: "white", borderBottom: "1px solid", borderColor: "divider" }}>
                     
                     {/* Header */}
@@ -206,3 +210,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

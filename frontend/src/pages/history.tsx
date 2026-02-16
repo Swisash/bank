@@ -23,6 +23,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { useEffect } from "react";
 import { getCurrentUser } from "../api/authApi";
 import type { GetCurrentUserResponse } from "../api/types";
+import  Logo  from "../components/Logo";
 
 
 const History = () => {
@@ -68,6 +69,7 @@ const History = () => {
             >
                 <Toolbar sx={{ justifyContent: "space-between" }}>
                     <Stack direction="row" spacing={2} alignItems="center">
+                        <Logo />
                         <Typography fontWeight={800} color="text.primary">SHIZZ BANK</Typography>
                             <Button
                             variant="contained"
